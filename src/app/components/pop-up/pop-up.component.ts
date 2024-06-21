@@ -16,7 +16,7 @@ export class PopUpComponent {
  
 
   closePopup() {
-    this.gameservice.popupMessage.set('')
+    this.gameservice.popupMessage.set({message:'', color:''})
   }
 
   

@@ -2,13 +2,14 @@
 import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
 import { Gameinfo } from './models/gameinfo';
 import { BehaviorSubject } from 'rxjs';
+import { PopUpMesasge } from './models/popupmessage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
   public gameInfo:WritableSignal<Gameinfo> =  signal({playerXWin:0, playerOWin:0, draw:0})
-  public popupMessage:WritableSignal<string> = signal('')
+  public popupMessage:WritableSignal<PopUpMesasge> = signal({message:'', color:''})
   private board!: string[][];
   private currentPlayer!: string;
   private winner!: string ;
@@ -60,7 +61,7 @@ export class GameService {
          ...res,
           draw: res.draw + 1,
         }));
-        this.popupMessage.set("Opps it's a draw ");
+        this.popupMessage.set({message:"Opps it's a draw ", color:'black'});
       }
       if (this.checkWinner(row, col)) {
         this.winAudio.play().catch((error:string)=> console.error('Error playing win sound:', error));
@@ -70,14 +71,14 @@ export class GameService {
             ...res,
             playerXWin: res.playerXWin + 1,
           }));
-          this.popupMessage.set('Player X won!');
+          this.popupMessage.set({message:'Player X won!', color:'red'});
         }
         if (this.currentPlayer === 'O') {
           this.gameInfo.update((res: Gameinfo) => ({
             ...res,
             playerOWin: res.playerOWin + 1,
           }));
-          this.popupMessage.set('Player O won!');
+          this.popupMessage.set({message:'Player O won!', color:'blue'});
         }
       } else {
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
