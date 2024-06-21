@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 50px;
+  
   }
   
   .board {
@@ -27,11 +28,27 @@
     cursor: pointer;
     font-size: 2rem;
     transition: background-color 0.3s;
+    .symbol {
+      font-size: 2.5rem;
+      font-weight: bolder;
+      opacity: 0;
+      animation: fadeIn 0.1s ease-out forwards;
+    }
   }
+  @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
   
-  .cell:hover {
-    background-color: #ddd;
-  }
+  // .cell:hover {
+  //   background-color: #ddd;
+  // }
   
   .player-x {
     color: red;

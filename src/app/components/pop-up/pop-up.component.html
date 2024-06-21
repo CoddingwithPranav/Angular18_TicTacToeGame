@@ -1,0 +1,17 @@
+@if(gameservice.popupMessage().length> 0){
+<div class="popup-overlay" (click)="closePopup()">
+  <div class="popup-content">
+    <div class="flex gap-5 items-center">
+      <h2 class="text-black text-4xl">{{gameservice.popupMessage()}}</h2>
+      <i
+        class="bx bxs-happy-heart-eyes text-black text-4xl"
+        [ngClass]="{'text-red-600':gameservice.popupMessage().includes('X'),
+                    'text-blue-700':gameservice.popupMessage().includes('O'),
+                    'text-black':gameservice.popupMessage().includes('draw'),
+         }"
+      ></i>
+    </div>
+  </div>
+</div>
+
+}

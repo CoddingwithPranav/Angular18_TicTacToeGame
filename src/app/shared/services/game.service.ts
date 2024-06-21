@@ -1,12 +1,14 @@
 // src/app/game.service.ts
 import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
 import { Gameinfo } from './models/gameinfo';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
   public gameInfo:WritableSignal<Gameinfo> =  signal({playerXWin:0, playerOWin:0, draw:0})
+  public popupMessage:WritableSignal<string> = signal('')
   private board!: string[][];
   private currentPlayer!: string;
   private winner!: string ;
@@ -33,6 +35,7 @@ export class GameService {
     ];
     this.currentPlayer = 'X';
     this.winner = '';
+    this.gameInfo.set({playerXWin:0, playerOWin:0, draw:0})
   }
 
   getBoard() {
@@ -48,6 +51,7 @@ export class GameService {
   }
 
   makeMove(row: number, col: number) {
+  
     if (!this.board[row][col] && !this.winner) {
       this.clickAudio.play().catch((error:string) => console.error('Error playing click sound:', error));
       this.board[row][col] = this.currentPlayer;
@@ -56,6 +60,7 @@ export class GameService {
          ...res,
           draw: res.draw + 1,
         }));
+        this.popupMessage.set("Opps it's a draw ");
       }
       if (this.checkWinner(row, col)) {
         this.winAudio.play().catch((error:string)=> console.error('Error playing win sound:', error));
@@ -65,12 +70,14 @@ export class GameService {
             ...res,
             playerXWin: res.playerXWin + 1,
           }));
+          this.popupMessage.set('Player X won!');
         }
         if (this.currentPlayer === 'O') {
           this.gameInfo.update((res: Gameinfo) => ({
             ...res,
             playerOWin: res.playerOWin + 1,
           }));
+          this.popupMessage.set('Player O won!');
         }
       } else {
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';

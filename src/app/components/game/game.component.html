@@ -2,16 +2,17 @@
     <div class="board">
       <div *ngFor="let row of board; let rowIndex = index" class="row">
         <div *ngFor="let cell of row; let colIndex = index" class="cell" (click)="makeMove(rowIndex, colIndex)">
-          <span>{{ cell }}</span>
+          <span class="symbol" [ngClass]="{'player-x': cell === 'X', 'player-o': cell === 'O'}">{{ cell }}</span>
         </div>
       </div>
     </div>
-    <ul>
-    </ul>
-    <div class="info">
+    <!-- <div>
+      Play with Bot <input type="checkbox" (change)="toggleBotPlay($event)" />
+    </div> -->
+    <div class="info ">
       <p *ngIf="!winner">Current Player: <span [appHighlightPlayer]="currentPlayer">{{ currentPlayer | playerName }}</span></p>
       <p *ngIf="winner">Winner: <span [appHighlightPlayer]="winner">{{ winner | playerName  }}</span></p>
-      <div class="playerScore">
+      <div class="playerScore my-4">
         <div >
           <span>Player X</span>
           <span>{{gameService.gameInfo().playerXWin}}</span>
@@ -25,7 +26,7 @@
           <span>{{gameService.gameInfo().playerOWin}}</span>
         </div>
       </div>
-      <button (click)="newGame()">Restart</button>
+      <button class="px-4 py-2 m-2 bg-white text-black rounded-md font-bold" (click)="newGame()">Restart</button>
     </div>
   </div>
   
