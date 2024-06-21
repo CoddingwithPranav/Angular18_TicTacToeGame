@@ -1,0 +1,31 @@
+<div class="game-container">
+    <div class="board">
+      <div *ngFor="let row of board; let rowIndex = index" class="row">
+        <div *ngFor="let cell of row; let colIndex = index" class="cell" (click)="makeMove(rowIndex, colIndex)">
+          <span>{{ cell }}</span>
+        </div>
+      </div>
+    </div>
+    <ul>
+    </ul>
+    <div class="info">
+      <p *ngIf="!winner">Current Player: <span [appHighlightPlayer]="currentPlayer">{{ currentPlayer | playerName }}</span></p>
+      <p *ngIf="winner">Winner: <span [appHighlightPlayer]="winner">{{ winner | playerName  }}</span></p>
+      <div class="playerScore">
+        <div >
+          <span>Player X</span>
+          <span>{{gameService.gameInfo().playerXWin}}</span>
+        </div>
+        <div> 
+          <span>Draw</span>
+          <span>{{gameService.gameInfo().draw}}</span>
+        </div>
+        <div >
+          <span>Player O</span>
+          <span>{{gameService.gameInfo().playerOWin}}</span>
+        </div>
+      </div>
+      <button (click)="newGame()">Restart</button>
+    </div>
+  </div>
+  
