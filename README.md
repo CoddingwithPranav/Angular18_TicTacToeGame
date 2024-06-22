@@ -30,8 +30,67 @@ To run the Tic Tac Toe game locally, follow these steps:
 4. **Game End**: A message displays when a player wins or when the game ends in a draw.
 5. **Reset Game**: Click the reset button to start a new game.
 
-## Contributions
-Contributions to the project are welcome! Fork the repository, create a new branch, and submit a pull request with your enhancements. For major changes, please open an issue first to discuss what you would like to change.
+## Code Explanation
+
+### `game.service.ts`
+The `GameService` class manages the core game logic and interactions, including player moves, checking for win conditions, and managing the game state.
+
+#### Key Methods:
+- **`resetGame()`**: Resets the game board and initializes the game state.
+- **`makeMove(row: number, col: number)`**: Handles a player's move, updates the game board, and checks for win/draw conditions.
+- **`makeMoveBotMode(row: number, col: number, botModeEnabled: boolean)`**: Handles player moves in bot mode and triggers the bot's move after a delay.
+- **`makeBotMove()`**: Makes a random move for the bot and checks for win conditions.
+
+#### Example Method from `GameService`:
+
+```typescript
+resetGame() {
+  this.board = [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', '']
+  ];
+  this.currentPlayer = 'X';
+  this.winner = '';
+}
+
+makeMove(row: number, col: number) {
+  if (!this.board[row][col] && !this.winner) {
+    this.clickAudio.play().catch((error: string) => console.error('Error playing click sound:', error));
+    this.board[row][col] = this.currentPlayer;
+    if (this.board.every(row => row.every(cell => cell !== ''))) {
+      this.gameInfo.update((res: Gameinfo) => ({
+        ...res,
+        draw: res.draw + 1,
+      }));
+      this.popupMessage.set({message: "Oops it's a draw", color: 'black'});
+    }
+    if (this.checkWinner(row, col)) {
+      this.winAudio.play().catch((error: string) => console.error('Error playing win sound:', error));
+      this.winner = this.currentPlayer;
+      if (this.currentPlayer === 'X') {
+        this.gameInfo.update((res: Gameinfo) => ({
+          ...res,
+          playerXWin: res.playerXWin + 1,
+        }));
+        this.popupMessage.set({message: 'Player X won!', color: 'red'});
+      }
+      if (this.currentPlayer === 'O') {
+        this.gameInfo.update((res: Gameinfo) => ({
+          ...res,
+          playerOWin: res.playerOWin + 1,
+        }));
+        this.popupMessage.set({message: 'Bot won!', color: 'blue'});
+      }
+    } else {
+      this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+    }
+  } else {
+    this.cancelAudio.play().catch((error: string) => console.error('Error playing cancel sound:', error));
+    this.resetGame();
+  }
+}
+```
 
 ## Acknowledgments
 - Thanks to the Angular team for their powerful framework.
