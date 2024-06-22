@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PlayerNamePipe implements PipeTransform {
 
   transform(value: string): string {
-    return value === 'X' ? 'Player X' : value === 'O' ? 'Player O' : '';
+    return value === 'X' ? "Player X " : value === 'O' ? "Player O " : '';
   }
 
 }

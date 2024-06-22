@@ -22,7 +22,7 @@ export class GameService {
       this.clickAudio = new Audio();
     this.clickAudio.src = '../../../assets/sounds/click.mp3';
     this.winAudio = new Audio();
-    this.winAudio.src = '../../../assets/sounds/win.mp3';
+    this.winAudio.src = '../../../assets/sounds/epicsuccess.mp3';
     this.cancelAudio = new Audio();
     this.cancelAudio.src = '../../../assets/sounds/cancel.mp3';
   }
@@ -36,7 +36,6 @@ export class GameService {
     ];
     this.currentPlayer = 'X';
     this.winner = '';
-    this.gameInfo.set({playerXWin:0, playerOWin:0, draw:0})
   }
 
   getBoard() {
@@ -103,4 +102,48 @@ export class GameService {
 
     return false;
   }
+
+
+
+  makeMoveBotMode(row: number, col: number, botModeEnabled: boolean) {
+    if (botModeEnabled) {
+      // Handle player's move
+      this.makeMove(row, col);
+
+      // If the game is still going, make a move for the bot
+      if (!this.winner) {
+        setTimeout(() => {
+          this.makeBotMove();
+        }, 1000);
+      }
+    } else {
+      // Handle moves as before
+      this.makeMove(row, col);
+    }
+  }
+
+  private makeBotMove() {
+    const emptyCells: { row: number, col: number }[] = [];
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        if (this.board[r][c] === '') {
+          emptyCells.push({ row: r, col: c });
+        }
+      }
+    }
+
+    if (emptyCells.length > 0) {
+      const randomIndex = Math.floor(Math.random() * emptyCells.length);
+      const { row, col } = emptyCells[randomIndex];
+      this.currentPlayer = 'O'; // Bot is always 'O'
+      this.makeMove(row, col);
+
+      // If the bot wins, update the popup message
+      if (this.winner === 'O') {
+        this.popupMessage.set({message:'Bot won!', color:'blue'});
+      }
+    }
+  }
 }
+  
+

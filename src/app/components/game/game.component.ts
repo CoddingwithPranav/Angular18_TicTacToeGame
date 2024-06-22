@@ -25,17 +25,21 @@ export class GameComponent {
   ngOnInit(): void {
     this.newGame();
   }
-  toggleBotPlay(event: any): void {
-    this.playWithBot = event.target.checked;
-    console.log(this.playWithBot)
+
+  ChangeMode(){
+    this.playWithBot =!this.playWithBot;
+    this.newGame();
   }
+ 
   newGame(): void {
     this.gameService.resetGame();
     this.updateGame();
   }
 
   makeMove(row: number, col: number): void {
-      this.gameService.makeMove(row, col);
+    
+    this.gameService.makeMoveBotMode(row, col, this.playWithBot)
+      // this.gameService.makeMove(row, col);
       this.updateGame();
   }
 
@@ -44,5 +48,9 @@ export class GameComponent {
     this.currentPlayer = this.gameService.getCurrentPlayer();
     this.winner = this.gameService.getWinner();
    
+  }
+  reset(){
+    this.gameService.gameInfo.set({playerXWin:0, playerOWin:0, draw:0})
+
   }
 }
