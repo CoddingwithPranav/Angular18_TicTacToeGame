@@ -1,8 +1,7 @@
 // src/app/game.service.ts
-import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
-import { Gameinfo } from './models/gameinfo';
-import { BehaviorSubject } from 'rxjs';
-import { PopUpMesasge } from './models/popupmessage';
+import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Gameinfo } from '../models/gameinfo';
+import { PopUpMesasge } from '../models/popupmessage';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class GameService {
       this.clickAudio = new Audio();
     this.clickAudio.src = '../../../assets/sounds/click.mp3';
     this.winAudio = new Audio();
-    this.winAudio.src = '../../../assets/sounds/epicsuccess.mp3';
+    this.winAudio.src = '../../../assets/sounds/win.mp3';
     this.cancelAudio = new Audio();
     this.cancelAudio.src = '../../../assets/sounds/cancel.mp3';
   }
@@ -114,7 +113,7 @@ export class GameService {
       if (!this.winner) {
         setTimeout(() => {
           this.makeBotMove();
-        }, 1000);
+        }, 500);
       }
     } else {
       // Handle moves as before
@@ -140,7 +139,7 @@ export class GameService {
 
       // If the bot wins, update the popup message
       if (this.winner === 'O') {
-        this.popupMessage.set({message:'Bot won!', color:'blue'});
+        this.popupMessage.set({message:'Computer won!', color:'blue'});
       }
     }
   }

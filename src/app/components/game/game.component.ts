@@ -29,6 +29,7 @@ export class GameComponent {
   ChangeMode(){
     this.playWithBot =!this.playWithBot;
     this.newGame();
+    this.reset();
   }
  
   newGame(): void {

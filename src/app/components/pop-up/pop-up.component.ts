@@ -11,8 +11,6 @@ import { NgClass } from '@angular/common';
 })
 export class PopUpComponent {
   gameservice = inject(GameService)
-  @Input()message: string | null = '';
-  @Input()show: boolean = false
  
 
   closePopup() {

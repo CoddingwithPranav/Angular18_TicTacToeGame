@@ -35,7 +35,7 @@
     </div>
     <div class="playerScore my-4">
       <div>
-        <span>Player X</span>
+        <span>Player ( X )</span>
         <span>{{ gameService.gameInfo().playerXWin }}</span>
       </div>
       <div>
@@ -43,7 +43,7 @@
         <span>{{ gameService.gameInfo().draw }}</span>
       </div>
       <div>
-        <span>Player O</span>
+        <span>{{ playWithBot?'Computer ( O )':'Player ( O )'}}</span>
         <span>{{ gameService.gameInfo().playerOWin }}</span>
       </div>
     </div>
